@@ -11,7 +11,7 @@ void perspectiveApply(float mat[4][4], float res[4], float vec[4]);
 int main(void)
 {
 
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "3dGraphicsEngine");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "Basic3dRenderer");
 
     float zNear = 0.1;
     float zFar = 1000.0;
@@ -21,6 +21,9 @@ int main(void)
     float fovY = 60;
     float fovRadX = 1.0 / tanf(fovX * 0.5 / 180.0f * PI);
     float fovRadY = 1.0 / tanf(fovY * 0.5 / 180.0f * PI);
+
+    float cameraDepth = 3;
+    float scale = 100;
 
     SetTargetFPS(240);
 
@@ -52,19 +55,40 @@ int main(void)
 
         for (int i = 0; i < POINTCOLIND; i++)
         {
-            rotateMat(rotationMatY, rotatedX[i], meshPoints[i]);
+            rotateMat(rotationMatX, rotatedX[i], meshPoints[i]);
         }
 
         float rotatedXY[POINTCOLIND][4] = {};
         for (int i = 0; i < POINTCOLIND; i++)
         {
-            rotateMat(rotationMatX, rotatedXY[i], rotatedX[i]);
+            rotateMat(rotationMatY, rotatedXY[i], rotatedX[i]);
         }
 
         float rotatedXYZ[POINTCOLIND][4] = {};
         for (int i = 0; i < POINTCOLIND; i++)
         {
             rotateMat(rotationMatZ, rotatedXYZ[i], rotatedXY[i]);
+        }
+
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            cameraDepth -= 1;
+        }
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            cameraDepth += 1;
+        }
+
+        if (IsKeyPressed(KEY_UP))
+        {
+            scale += 100;
+        }
+        if (IsKeyPressed(KEY_DOWN))
+        {
+            if (scale - 100 != 0)
+            {
+                scale -= 100;
+            }
         }
 
         float translated[POINTCOLIND][4] = {};
@@ -77,7 +101,7 @@ int main(void)
                 // translated[i][j] = -1 * meshPoints[i][j];
             }
             // camera depth
-            translated[i][2] += 3;
+            translated[i][2] += cameraDepth;
         }
 
         float projected[POINTCOLIND][4] = {};
@@ -86,8 +110,8 @@ int main(void)
         {
             perspectiveApply(projectionMat, projected[i], translated[i]);
 
-            projected[i][0] *= 200;
-            projected[i][1] *= 200;
+            projected[i][0] *= 1 + scale;
+            projected[i][1] *= 2 + scale;
 
             projected[i][0] += 0.5 * (float)SCREENWIDTH;
             projected[i][1] += 0.5 * (float)SCREENHEIGHT;
@@ -103,7 +127,10 @@ int main(void)
             Vector2 V2 = {projected[meshVertexPoints[i][1] - 1][0], projected[meshVertexPoints[i][1] - 1][1]};
             Vector2 V3 = {projected[meshVertexPoints[i][2] - 1][0], projected[meshVertexPoints[i][2] - 1][1]};
 
-            DrawTriangleLines(V1, V2, V3, WHITE);
+            Vector2 normal = {};
+
+            DrawTriangle(V1, V3, V2, WHITE);
+            // DrawTriangleLines(V1, V3, V2, WHITE);
         }
 
         if (angle > 360)

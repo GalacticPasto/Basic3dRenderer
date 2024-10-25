@@ -8,18 +8,19 @@ int main()
     FILE *readPtr;
     FILE *writePtr;
 
-    // readPtr =   fopen("../Objs/Cube.obj","r");
-    //  readPtr = fopen("../Objs/Sphere.obj","r");
-    // readPtr = fopen("../Objs/Cylinder.obj", "r");
-    //  readPtr = fopen("../Objs/Cone.obj","r");
-    readPtr = fopen("../Objs/Torus.obj", "r");
-    // readPtr = fopen("../Objs/Teapot.obj", "r");
-    // readPtr = fopen("../Objs/Mountains.obj","r");
-    // readPtr = fopen("../Objs/Cube.obj", "r");
-    writePtr = fopen("../src/meshData.h", "w");
+    // readPtr = fopen("Objs/Cone.obj", "r");
+    // readPtr = fopen("Objs/Cube.obj", "r");
+    // readPtr = fopen("Objs/Cylinder.obj", "r");
+    //  readPtr = fopen("Objs/Mountains.obj","r");
+    //  readPtr = fopen("Objs/Sphere.obj", "r");
+    // readPtr = fopen("Objs/Spoon.obj", "r");
+    // readPtr = fopen("Objs/Teacup.obj", "r");
+    // readPtr = fopen("Objs/Teapot.obj", "r");
+    // readPtr = fopen("Objs/Torus.obj", "r");
+    readPtr = fopen("Objs/VideoShip.obj", "r");
+    writePtr = fopen("src/meshData.h", "w");
 
     char buffer[512] = {};
-
     if (readPtr != NULL)
     {
         int pointColInd = 0;
@@ -27,7 +28,13 @@ int main()
 
         while (fgets(buffer, sizeof(buffer), readPtr))
         {
-            if (buffer[0] == 'v' && buffer[1] == ' ')
+            if (buffer[0] == 'o')
+            {
+                char *token = strtok(buffer, " ");
+                token = strtok(NULL, " ");
+                fprintf(writePtr, "//%s\n", token);
+            }
+            else if (buffer[0] == 'v' && buffer[1] == ' ')
             {
                 pointColInd++;
             }
@@ -39,7 +46,7 @@ int main()
 
         fprintf(writePtr, "#define POINTCOLIND %d\n", pointColInd);
         fprintf(writePtr, "#define VERTEXCOLIND %d\n", vertexDataInd);
-        fprintf(writePtr, "float meshPoints[POINTCOLIND][3] = { \n");
+        fprintf(writePtr, "float meshPoints[POINTCOLIND][4] = { \n");
 
         rewind(readPtr);
 
@@ -72,7 +79,7 @@ int main()
         }
         fprintf(writePtr, "}; \n");
         rewind(readPtr);
-        fprintf(writePtr, "int meshVertexPoints[VERTEXCOLIND][3] = { \n");
+        fprintf(writePtr, "int meshVertexPoints[VERTEXCOLIND][4] = { \n");
 
         while (fgets(buffer, sizeof(buffer), readPtr))
         {
@@ -81,7 +88,6 @@ int main()
                 char *token = strtok(buffer, " ");
                 token = strtok(NULL, " ");
 
-                char data[64] = {};
                 fprintf(writePtr, "{");
                 while (token != NULL)
                 {
@@ -111,6 +117,6 @@ int main()
     }
     else
     {
-        printf("cant read obj file!! :( ");
+        printf("Cant find obj file :( ");
     }
 }
