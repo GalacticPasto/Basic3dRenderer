@@ -70,20 +70,20 @@ int main(void)
             rotateMat(rotationMatZ, rotatedXYZ[i], rotatedXY[i]);
         }
 
-        if (IsKeyPressed(KEY_LEFT))
+        if (IsKeyPressed(KEY_W))
         {
             cameraDepth -= 1;
         }
-        if (IsKeyPressed(KEY_RIGHT))
+        if (IsKeyPressed(KEY_S))
         {
             cameraDepth += 1;
         }
 
-        if (IsKeyPressed(KEY_UP))
+        if (IsKeyPressed(KEY_D))
         {
             scale += 100;
         }
-        if (IsKeyPressed(KEY_DOWN))
+        if (IsKeyPressed(KEY_A))
         {
             if (scale - 100 != 0)
             {
@@ -97,8 +97,6 @@ int main(void)
             for (int j = 0; j < 3; j++)
             {
                 translated[i][j] = -1 * rotatedXYZ[i][j];
-                // translated[i][j] = -1 * rotatedX[i][j];
-                // translated[i][j] = -1 * meshPoints[i][j];
             }
             // camera depth
             translated[i][2] += cameraDepth;
