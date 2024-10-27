@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WINDOWS 
-
+#define WINDOWS
+#undef WINDOWS
+#define LINUX
 
 int main()
 {
@@ -12,7 +13,7 @@ int main()
     FILE *readPtr;
     FILE *writePtr;
 
-#ifdef WINDOWS 
+#ifdef WINDOWS
     // readPtr = fopen("Objs/Cone.obj", "r");
     // readPtr = fopen("Objs/Cube.obj", "r");
     // readPtr = fopen("Objs/Cylinder.obj", "r");
@@ -22,11 +23,11 @@ int main()
     // readPtr = fopen("Objs/Teacup.obj", "r");
     // readPtr = fopen("Objs/Teapot.obj", "r");
     // readPtr = fopen("Objs/Torus.obj", "r");
-    //readPtr = fopen("Objs/VideoShip.obj", "r");
-    //writePtr = fopen("src/meshData.h", "w");
+    // readPtr = fopen("Objs/VideoShip.obj", "r");
+    // writePtr = fopen("src/meshData.h", "w");
 
-    fopen_s(&readPtr,"..\\Objs\\VideoShip.obj", "r");
-    fopen_s(&writePtr,"..\\src\\meshData.h", "w");
+    fopen_s(&readPtr, "..\\Objs\\VideoShip.obj", "r");
+    fopen_s(&writePtr, "..\\src\\meshData.h", "w");
 
     char buffer[512] = {};
     if (readPtr != NULL)
@@ -40,8 +41,8 @@ int main()
             {
                 char *token;
                 char *nextToken;
-                strtok_s(buffer, " ",&nextToken);
-                token = strtok_s(NULL," ",&nextToken);
+                strtok_s(buffer, " ", &nextToken);
+                token = strtok_s(NULL, " ", &nextToken);
                 fprintf(writePtr, "//%s\n", token);
             }
             else if (buffer[0] == 'v' && buffer[1] == ' ')
@@ -66,8 +67,8 @@ int main()
             {
                 char *token;
                 char *nextToken;
-                strtok_s(buffer, " ",&nextToken);
-                token = strtok_s(NULL," ",&nextToken);
+                strtok_s(buffer, " ", &nextToken);
+                token = strtok_s(NULL, " ", &nextToken);
                 fprintf(writePtr, "{");
                 while (token != NULL)
                 {
@@ -79,7 +80,7 @@ int main()
                             fprintf(writePtr, ",");
                         }
                     }
-                    token = strtok_s(NULL," ",&nextToken);
+                    token = strtok_s(NULL, " ", &nextToken);
                     if (token == NULL)
                     {
                         fprintf(writePtr, "\n");
@@ -98,8 +99,8 @@ int main()
             {
                 char *token;
                 char *nextToken;
-                strtok_s(buffer, " ",&nextToken);
-                token = strtok_s(NULL," ",&nextToken);
+                strtok_s(buffer, " ", &nextToken);
+                token = strtok_s(NULL, " ", &nextToken);
 
                 fprintf(writePtr, "{");
                 while (token != NULL)
@@ -113,7 +114,7 @@ int main()
                         }
                         fprintf(writePtr, "%c", token[i]);
                     }
-                    token = strtok_s(NULL, " ",&nextToken);
+                    token = strtok_s(NULL, " ", &nextToken);
                     if (token == NULL)
                     {
                         fprintf(writePtr, "\n");
@@ -129,26 +130,23 @@ int main()
         fclose(writePtr);
     }
     else
-{
+    {
         printf("Cant find obj file :( ");
     }
 #endif
 
-#ifdef LINUX 
+#ifdef LINUX
     // readPtr = fopen("Objs/Cone.obj", "r");
     // readPtr = fopen("Objs/Cube.obj", "r");
     // readPtr = fopen("Objs/Cylinder.obj", "r");
-    //  readPtr = fopen("Objs/Mountains.obj","r");
-    //  readPtr = fopen("Objs/Sphere.obj", "r");
-    // readPtr = fopen("Objs/Spoon.obj", "r");
-    // readPtr = fopen("Objs/Teacup.obj", "r");
+    //   readPtr = fopen("Objs/Mountains.obj","r");
+    //   readPtr = fopen("Objs/Sphere.obj", "r");
+    //  readPtr = fopen("Objs/Spoon.obj", "r");
+    //  readPtr = fopen("Objs/Teacup.obj", "r");
     // readPtr = fopen("Objs/Teapot.obj", "r");
     // readPtr = fopen("Objs/Torus.obj", "r");
-    //readPtr = fopen("Objs/VideoShip.obj", "r");
-    //writePtr = fopen("src/meshData.h", "w");
-
-    readPtr = fopen("..\\Objs\\VideoShip.obj", "r");
-    writePtr = fopen("..\\src\\meshData.h", "w");
+    readPtr = fopen("Objs/VideoShip.obj", "r");
+    writePtr = fopen("src/meshData.h", "w");
 
     char buffer[512] = {};
     if (readPtr != NULL)
@@ -246,8 +244,8 @@ int main()
         fclose(writePtr);
     }
     else
-{
-        printf("Cant find obj file :( ");
+    {
+        return 1;
     }
 #endif
 }

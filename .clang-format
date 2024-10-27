@@ -1,1 +1,6 @@
 BasedOnStyle: Microsoft 
+IndentWidth: 4
+ColumnLimit: 150 
+AlignAfterOpenBracket: Align
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments: Consecutive
