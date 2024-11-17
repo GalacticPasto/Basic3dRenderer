@@ -1,18 +1,17 @@
 @echo off
-set includepath="C:\Program Files\vcpkg\installed\x64-windows\include"
-set libpath="C:\Program Files\vcpkg\installed\x64-windows\lib"
-set compilerFlags= -Wall -Werror 
-::clang gdi32.lib kernel32.lib msvcrt.lib opengl32.lib raylib.lib shell32.lib user32.lib winmm.lib ..\src\Basic3dRenderer.c -I%includepath% /link /libpath:%libpath%
+mkdir build
+set compilerflags= -FAsc -Zi /std:clatest
+set includeflags=-I"D:\Projects\raylib-5.0_win64_msvc16\include" 
+::                  set ^^^^^^^^^ this to your raylib include folder path 
+set linkerflags= gdi32.lib msvcrt.lib winmm.lib opengl32.lib shell32.lib raylib.lib user32.lib   /link /libpath:"D:\Projects\raylib-5.0_win64_msvc16\lib" /NODEFAULTLIB:libcmt
+::                                                                                                          set      ^^^^ this to your raylib lib folder
 pushd build
 
 if exist ..\src\meshData.h del ..\src\meshData.h
 
-clang ..\src\ObjFileParser.c -o ObjFileParser.exe 
+cl ..\src\ObjFileParser.c %compilerFlags% %linkerflags% 
 
 ObjFileParser.exe
 
-::cl gdi32.lib kernel32.lib msvcrt.lib opengl32.lib raylib.lib shell32.lib user32.lib winmm.lib ..\src\Basic3dRenderer.c -I%includepath% /link /libpath:%libpath%
-clang ..\src\Basic3dRenderer.c -o Basic3dRenderer.exe %compilerFlags% -L%libpath% -lraylib.lib -I%includepath% 
-
-popd
-
+cl ..\src\Basic3dRenderer.c %compilerflags% %includeflags% %linkerflags%
+popd 

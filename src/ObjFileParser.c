@@ -4,8 +4,8 @@
 #include <string.h>
 
 #define WINDOWS
-#undef WINDOWS
-#define LINUX
+//#undef WINDOWS
+//#define LINUX
 
 int main()
 {
